@@ -1,6 +1,7 @@
 import { prisma } from "@/db"
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import { revalidatePath } from "next/cache"
 
 async function createTodo(data: FormData) {
   "use server"
@@ -11,6 +12,7 @@ async function createTodo(data: FormData) {
   }
 
   await prisma.todo.create({ data: { title, complete: false } })
+  revalidatePath("/")
   redirect("/")
 }
 
